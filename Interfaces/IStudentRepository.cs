@@ -6,11 +6,12 @@ namespace UniversityApp.Interfaces
     public interface IStudentRepository
     {
         Task<IEnumerable<StudentDTO>> GetAllAsync();
-        Task<StudentDTO?> GetByIdAsync(int id);
+        
+        Task<StudentDTO> GetByIdAsync(int id);
 
-        Task CreateAsync(CreateStudentDTO studentDto);
+        Task CreateAsync(CreateStudentDTO cStudentDto);
 
-        Task UpdateAsync(UpdateStudentDTO studentDto);
+        Task UpdateAsync(UpdateStudentDTO uStudentDto);
 
         Task DeleteAsync(int id);
     }

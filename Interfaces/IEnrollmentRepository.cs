@@ -1,16 +1,15 @@
 using UniversityApp.DTOs;
-
-public interface EnrollmentRepository
+using UniversityApp.Models;
+namespace UniversityApp.Repositories
 {
-    public void EnrollStudent(int studentId, int courseId);
+    public interface IEnrollmentRepository
+    {
+        public Task<IEnumerable<Enrollment>> GetAllAsync();
 
-    public void UnenrollStudent(int studentId, int courseId);
+        public Task<Enrollment> GetByIdsAsync(int studentId, int courseId);
 
-    public void EnrollCourse(int courseId, int studentId);
+        public Task EnrollStudentAsync(int studentId, int courseId);
 
-    public void UnenrollCourse(int courseId, int studentId);
-
-    public IEnumerable<CourseDTO> GetCoursesByStudentId(int studentId);
-    
-    public IEnumerable<StudentDTO> GetStudentsByCourseId(int courseId);
+        public Task UnenrollStudentAsync(int studentId, int courseId);
+    }
 }

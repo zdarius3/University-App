@@ -16,6 +16,7 @@ public class StudentRepository : IStudentRepository
     public async Task<IEnumerable<StudentDTO>> GetAllAsync()
     {
         var students = await _context.Students.ToListAsync();
+        
         return students.Select(s => new StudentDTO
         {
             Id = s.Id,
@@ -24,14 +25,10 @@ public class StudentRepository : IStudentRepository
         });
     }
 
-    public async Task<StudentDTO?> GetByIdAsync(int id)
+    public async Task<StudentDTO> GetByIdAsync(int id)
     {
-        var student = await _context.Students.FindAsync(id);
-
-        if (student == null)
-        {
-            return null;
-        }   
+        var student = await _context.Students.FindAsync(id) ??
+            throw new KeyNotFoundException("Student not found"); 
 
         return new StudentDTO
         {
@@ -41,32 +38,30 @@ public class StudentRepository : IStudentRepository
         };
     }
 
-    public async Task CreateAsync(CreateStudentDTO studentDto)
+    public async Task CreateAsync(CreateStudentDTO cStudentDto)
     {
         _context.Students.Add(new Student
         {
-            Name = studentDto.Name,
-            Email = studentDto.Email
+            Name = cStudentDto.Name,
+            Email = cStudentDto.Email
         });
+
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(UpdateStudentDTO studentDto)
+    public async Task UpdateAsync(UpdateStudentDTO uStudentDto)
     {
-        var studentToUpdate = await _context.Students.FindAsync(studentDto.Id);
-
-        if (studentToUpdate == null)
-        {
+        //search student, if not found throw an exception
+        var studentToUpdate = await _context.Students.FindAsync(uStudentDto.Id) ??
             throw new KeyNotFoundException("Student not found");
-        }
 
-        if (studentDto.Name != null)
+        if (uStudentDto.Name != null)
         {
-            studentToUpdate.Name = studentDto.Name;
+            studentToUpdate.Name = uStudentDto.Name;
         }
-        if (studentDto.Email != null)
+        if (uStudentDto.Email != null)
         {
-            studentToUpdate.Email = studentDto.Email;
+            studentToUpdate.Email = uStudentDto.Email;
         }   
         
         await _context.SaveChangesAsync();
@@ -74,8 +69,10 @@ public class StudentRepository : IStudentRepository
 
     public async Task DeleteAsync(int id)
     {
+        //search student, if not found throw an exception
         var studentToDelete = await _context.Students.FindAsync(id) ??
             throw new KeyNotFoundException("Student not found");
+
         _context.Students.Remove(studentToDelete);
         await _context.SaveChangesAsync();
     }
