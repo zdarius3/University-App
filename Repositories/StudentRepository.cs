@@ -38,18 +38,20 @@ public class StudentRepository : IStudentRepository
         };
     }
 
-    public async Task CreateAsync(CreateStudentDTO cStudentDto)
+    public async Task<Student> CreateAsync(CreateStudentDTO cStudentDto)
     {
-        _context.Students.Add(new Student
+        var newStudent = new Student
         {
             Name = cStudentDto.Name,
             Email = cStudentDto.Email
-        });
+        };
+        _context.Students.Add(newStudent);
 
         await _context.SaveChangesAsync();
+        return newStudent;
     }
 
-    public async Task UpdateAsync(UpdateStudentDTO uStudentDto)
+    public async Task<Student> UpdateAsync(UpdateStudentDTO uStudentDto)
     {
         //search student, if not found throw an exception
         var studentToUpdate = await _context.Students.FindAsync(uStudentDto.Id) ??
@@ -62,12 +64,13 @@ public class StudentRepository : IStudentRepository
         if (uStudentDto.Email != null)
         {
             studentToUpdate.Email = uStudentDto.Email;
-        }   
-        
+        }
+
         await _context.SaveChangesAsync();
+        return studentToUpdate;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<Student> DeleteAsync(int id)
     {
         //search student, if not found throw an exception
         var studentToDelete = await _context.Students.FindAsync(id) ??
@@ -75,5 +78,6 @@ public class StudentRepository : IStudentRepository
 
         _context.Students.Remove(studentToDelete);
         await _context.SaveChangesAsync();
+        return studentToDelete;
     }
 }

@@ -1,4 +1,5 @@
 using UniversityApp.DTOs;
+using UniversityApp.Models;
 
 namespace UniversityApp.Interfaces
 {
@@ -9,10 +10,10 @@ namespace UniversityApp.Interfaces
         
         Task<StudentDTO> GetByIdAsync(int id);
 
-        Task CreateAsync(CreateStudentDTO cStudentDto);
+        Task<Student> CreateAsync(CreateStudentDTO cStudentDto);
 
-        Task UpdateAsync(UpdateStudentDTO uStudentDto);
+        Task<Student> UpdateAsync(UpdateStudentDTO uStudentDto);
 
-        Task DeleteAsync(int id);
+        Task<Student> DeleteAsync(int id);
     }
 }
