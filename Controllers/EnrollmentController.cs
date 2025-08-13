@@ -44,7 +44,7 @@ namespace UniversityApp.Controllers
             try
             {
                 var enrollment = await _enrollmentRepo.EnrollStudentAsync(studentId, courseId);
-                return CreatedAtAction(nameof(EnrollStudent), new
+                return CreatedAtAction(nameof(GetEnrollmentByIds), new
                     { studentId = enrollment.StudentId, courseId = enrollment.CourseId }, enrollment);
             }
             catch (KeyNotFoundException e)
