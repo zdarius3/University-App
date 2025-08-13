@@ -46,7 +46,7 @@ namespace UniversityApp.Controllers
             }
 
             var newStudent = await _studentRepo.CreateAsync(studentDto);
-            return CreatedAtAction(nameof(CreateStudent), new { id = newStudent.Id }, newStudent);
+            return CreatedAtAction(nameof(GetStudentById), new { id = newStudent.Id }, newStudent);
         }
 
         [HttpPut("UpdateStudent")]
