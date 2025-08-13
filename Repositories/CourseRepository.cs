@@ -17,7 +17,7 @@ namespace UniversityApp.Repositories
         public async Task<IEnumerable<CourseDTO>> GetAllAsync()
         {
             var courses = await _context.Courses.ToListAsync();
-            
+
             return courses.Select(c => new CourseDTO
             {
                 Id = c.Id,
@@ -40,18 +40,20 @@ namespace UniversityApp.Repositories
             };
         }
 
-        public async Task CreateAsync(CreateCourseDTO cCourseDTO)
+        public async Task<Course> CreateAsync(CreateCourseDTO cCourseDTO)
         {
-            await _context.Courses.AddAsync(new Course
+            var newCourse = new Course
             {
                 Title = cCourseDTO.Title,
                 Description = cCourseDTO.Description
-            });
+            };
+            await _context.Courses.AddAsync(newCourse);
 
             await _context.SaveChangesAsync();
+            return newCourse;
         }
 
-        public async Task UpdateAsync(UpdateCourseDTO uCourseDto)
+        public async Task<Course> UpdateAsync(UpdateCourseDTO uCourseDto)
         {
             //search course, if not found throw exception
             var courseToUpdate = await _context.Courses.FindAsync(uCourseDto.Id) ??
@@ -67,9 +69,10 @@ namespace UniversityApp.Repositories
             }
 
             await _context.SaveChangesAsync();
+            return courseToUpdate;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<Course> DeleteAsync(int id)
         {
             //search course, if not found throw exception
             var courseToDelete = await _context.Courses.FindAsync(id) ??
@@ -77,6 +80,7 @@ namespace UniversityApp.Repositories
 
             _context.Courses.Remove(courseToDelete);
             await _context.SaveChangesAsync();
+            return courseToDelete;
         }
     }
 }
