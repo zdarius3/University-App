@@ -8,8 +8,8 @@ namespace UniversityApp.Repositories
 
         public Task<Enrollment> GetByIdsAsync(int studentId, int courseId);
 
-        public Task EnrollStudentAsync(int studentId, int courseId);
+        public Task<Enrollment> EnrollStudentAsync(int studentId, int courseId);
 
-        public Task UnenrollStudentAsync(int studentId, int courseId);
+        public Task<Enrollment> UnenrollStudentAsync(int studentId, int courseId);
     }
 }

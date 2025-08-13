@@ -9,7 +9,7 @@ namespace UniversityApp.Repositories
     public class EnrollmentRepository : IEnrollmentRepository
     {
         public UniversityContext _context;
-        
+
         public EnrollmentRepository(UniversityContext context)
         {
             _context = context;
@@ -29,14 +29,14 @@ namespace UniversityApp.Repositories
             return enrollment;
          }
 
-        public async Task EnrollStudentAsync(int studentId, int courseId)
+        public async Task<Enrollment> EnrollStudentAsync(int studentId, int courseId)
         {
             //search entities, if not found throw exception
             var student = await _context.Students.FindAsync(studentId) ??
                 throw new KeyNotFoundException("Student not found");
             var course = await _context.Courses.FindAsync(courseId) ??
                 throw new KeyNotFoundException("Course not found");
-            Enrollment enrollment = new Enrollment
+            var enrollment = new Enrollment
             {
                 Student = student,
                 StudentId = student.Id,
@@ -49,9 +49,11 @@ namespace UniversityApp.Repositories
             course.Enrollments.Add(enrollment);
             await _context.Enrollments.AddAsync(enrollment);
             await _context.SaveChangesAsync();
+            return enrollment;
+
         }
 
-        public async Task UnenrollStudentAsync(int studentId, int courseId)
+        public async Task<Enrollment> UnenrollStudentAsync(int studentId, int courseId)
         {
             //search entities, if not found throw exception
             var student = await _context.Students.FindAsync(studentId) ??
@@ -66,6 +68,7 @@ namespace UniversityApp.Repositories
             course.Enrollments.Remove(enrollment);
             _context.Enrollments.Remove(enrollment);
             await _context.SaveChangesAsync();
+            return enrollment;
         }
     }
 }
