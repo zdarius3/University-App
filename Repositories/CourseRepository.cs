@@ -21,7 +21,8 @@ namespace UniversityApp.Repositories
             return courses.Select(c => new CourseDTO
             {
                 Id = c.Id,
-                Title = c.Title
+                Title = c.Title,
+                Description = c.Description
             });
         }
 
@@ -36,7 +37,8 @@ namespace UniversityApp.Repositories
             return new CourseDTO
             {
                 Id = course.Id,
-                Title = course.Title
+                Title = course.Title,
+                Description = course.Description
             };
         }
 
